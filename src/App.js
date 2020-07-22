@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav } from "react-bootstrap";
 import './App.css';
+import Routes from "./Routes";
 
 function App() {
   return (
@@ -11,8 +12,14 @@ function App() {
             <Nav.Link href="/">Scratch</Nav.Link>
           </Nav>
         </Navbar.Brand>
-
+        <Navbar.Collapse className="justify-content-end">
+          <Nav > 
+            <Nav.Link href="/signup">Signup</Nav.Link>
+            <Nav.Link href="/login">Login</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
+      <Routes />
     </div>
   );
 }
