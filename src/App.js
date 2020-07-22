@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import './App.css';
+import "./App.css";
 import Routes from "./Routes";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
           </Nav>
         </Navbar.Brand>
         <Navbar.Collapse className="justify-content-end">
-          <Nav > 
+          <Nav>
             <Nav.Link href="/signup">Signup</Nav.Link>
             <Nav.Link href="/login">Login</Nav.Link>
           </Nav>
