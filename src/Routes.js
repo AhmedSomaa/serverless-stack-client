@@ -5,7 +5,7 @@ import Notes from "./containers/Notes";
 import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
 import NotFound from "./containers/NotFound";
-import { Route, Switch, Router } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 export default function Routes() {
   return (
