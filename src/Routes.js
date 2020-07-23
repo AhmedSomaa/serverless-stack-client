@@ -1,10 +1,11 @@
 import React from "react";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
+import Notes from "./containers/Notes";
 import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
 import NotFound from "./containers/NotFound";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Router } from "react-router-dom";
 
 export default function Routes() {
   return (
@@ -20,6 +21,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/notes/new">
         <NewNote />
+      </Route>
+      <Route exact path="/notes/:id">
+        <Notes />
       </Route>
       <Route>
         <NotFound />
