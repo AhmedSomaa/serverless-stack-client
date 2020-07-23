@@ -5,7 +5,7 @@ import { onError } from "../libs/errorLib";
 import { useHistory } from "react-router-dom";
 import { useAppContext } from "../libs/contextLib";
 import LoaderButton from "../components/LoaderButton";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
 export default function Login() {
   const history = useHistory();
