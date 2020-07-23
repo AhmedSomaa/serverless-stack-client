@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Auth } from "aws-amplify";
 import Routes from "./Routes";
+import { onError } from "./libs/errorLib";
 import { useHistory } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import { AppContext } from "./libs/contextLib";
@@ -21,7 +22,7 @@ function App() {
       userHasAuthenticated(true);
     } catch (error) {
       if (error !== "No current user") {
-        alert(error);
+        onError(error);
       }
       setIsAuthenticating(false);
     }
