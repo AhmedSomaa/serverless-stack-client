@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import config from "../config";
+import { API } from "aws-amplify";
+import { s3Upload } from "../libs/awsLib";
 import { onError } from "../libs/errorLib";
 import { useHistory } from "react-router-dom";
 import LoaderButton from "../components/LoaderButton";
@@ -32,6 +34,23 @@ export default function NewNote() {
       return;
     }
     setIsLoading(true);
+
+    try {
+      const attachment = file.current ? await s3Upload(file.current) : null;
+
+      await createNote({ content, attachment });
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+      onError(error);
+      setIsLoading(false);
+    }
+  }
+
+  function createNote(note) {
+    return API.post("notes", "/notes", {
+      body: note,
+    });
   }
 
   return (
