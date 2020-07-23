@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import config from "../config";
+import { s3Upload } from "../libs/awsLib";
 import { onError } from "../libs/errorLib";
 import { API, Storage } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
@@ -10,7 +11,7 @@ import "./Notes.css";
 export default function Notes() {
   const file = useRef(null);
   const { id } = useParams();
-  const histroy = useHistory();
+  const history = useHistory();
   const [note, setNote] = useState(null);
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +52,12 @@ export default function Notes() {
     file.current = event.target.files[0];
   }
 
+  function saveNote(note) {
+    return API.put("notes", `/notes/${id}`, {
+      body: note,
+    });
+  }
+
   async function handleSubmit(event) {
     let attachment;
 
@@ -65,6 +72,25 @@ export default function Notes() {
       return;
     }
     setIsLoading(true);
+
+    try {
+      if (file.current) {
+        attachment = await s3Upload(file.current);
+      }
+
+      await saveNote({
+        content,
+        attachment: attachment || note.attachment,
+      });
+      history.push("/");
+    } catch (error) {
+      onError(error);
+      setIsLoading(false);
+    }
+  }
+
+  function deleteNote() {
+    return API.del("notes", `/notes/${id}`);
   }
 
   async function handleDelete(event) {
@@ -78,6 +104,14 @@ export default function Notes() {
     }
 
     setIsDeleting(true);
+
+    try {
+      await deleteNote();
+      history.push("/");
+    } catch (error) {
+      onError(error);
+      setIsDeleting(false);
+    }
   }
 
   return (
@@ -88,7 +122,7 @@ export default function Notes() {
             <FormControl
               value={content}
               as="textarea"
-              onChange={(e) => setContent(e.target.vale)}
+              onChange={(e) => setContent(e.target.value)}
             />
           </FormGroup>
           {note.attachment && (
