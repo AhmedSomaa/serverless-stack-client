@@ -1,6 +1,7 @@
 import React from "react";
+import "./LoaderButton.css";
 import { Button } from "react-bootstrap";
-import { SyncIcon } from "@primer/octicons-react";
+import { BsArrowRepeat } from "react-icons/bs";
 
 export default function LoaderButton({
   isLoading,
@@ -14,7 +15,7 @@ export default function LoaderButton({
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && <SyncIcon size={16} className="spinning" />}
+      {isLoading && <BsArrowRepeat size={20} className="spinning" />}
       {props.children}
     </Button>
   );
