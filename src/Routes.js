@@ -5,6 +5,7 @@ import Notes from "./containers/Notes";
 import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
 import NotFound from "./containers/NotFound";
+import Settings from "./containers/Settings";
 import { Route, Switch } from "react-router-dom";
 
 export default function Routes() {
@@ -24,6 +25,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/notes/:id">
         <Notes />
+      </Route>
+      <Route exact path="/settings">
+        <Settings />
       </Route>
       <Route>
         <NotFound />
