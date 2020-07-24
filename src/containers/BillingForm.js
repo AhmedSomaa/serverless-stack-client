@@ -1,0 +1,77 @@
+import React, { useState } from "react";
+import { useFormFields } from "../libs/hooksLib";
+import LoaderButton from "../components/LoaderButton";
+import { CardElement, injectStripe } from "react-stripe-elements";
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import "./BillingForm.css";
+
+function BillingForm({ isLoading, onSubmit, ...props }) {
+  const [fields, handleFieldChange] = useFormFields({
+    name: "",
+    storage: "",
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isCardComplete, setIsCardComplete] = useState(false);
+
+  isLoading = isProcessing || isLoading;
+
+  function validateForm() {
+    return fields.name !== "" && fields.storage !== "" && isCardComplete;
+  }
+
+  async function handleSubmitClick(event) {
+    event.preventDefault();
+
+    setIsProcessing(true);
+
+    const { token, error } = await props.stripe.createToken({
+      name: fields.name,
+    });
+
+    setIsProcessing(false);
+    onSubmit(fields.storage, { token, error });
+  }
+
+  return (
+    <form className="BillingForm" onSubmit={handleSubmitClick}>
+      <FormGroup controlId="storage">
+        <FormLabel>Storage</FormLabel>
+        <FormControl
+          min="0"
+          type="number"
+          value={fields.storage}
+          onChange={handleFieldChange}
+          placeholder="Number of notes to store"
+        />
+      </FormGroup>
+      <hr />
+      <FormGroup controlId="name">
+        <FormLabel>Cardholder&apos;s name</FormLabel>
+        <FormControl
+          type="text"
+          value={fields.name}
+          onChange={handleFieldChange}
+          placeholder="Name on the catrd"
+        />
+      </FormGroup>
+      <FormLabel>Credit Card Info</FormLabel>
+      <CardElement
+        className="card-field"
+        onChange={(e) => setIsCardComplete(e.complete)}
+        style={{
+          base: { fontSize: "18px", fontFamily: '"Open Sans", sans-serif' },
+        }}
+      />
+      <LoaderButton
+        block
+        type="submit"
+        isLoading={isLoading}
+        disabled={!validateForm()}
+      >
+        Purchase
+      </LoaderButton>
+    </form>
+  );
+}
+
+export default injectStripe(BillingForm);
